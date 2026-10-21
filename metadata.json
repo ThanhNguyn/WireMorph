@@ -1,0 +1,6 @@
+{
+  "name": "WireMorph — Fritzing ↔ Wokwi Circuit Converter",
+  "description": "Browser-based bidirectional electronic circuit converter between Fritzing (.fzz) and Wokwi (diagram.json) for ESP32 and embedded systems developers.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
