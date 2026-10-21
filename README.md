@@ -56,13 +56,14 @@ src/
 | Component Family | Fritzing `moduleIdRef` (Primary) | Wokwi `type` | Mapped Pins | Verification Fixture |
 |---|---|---|---|---|
 | **ESP32 DevKit V1 (30-Pin)** | `ESP32-DevKitC-30P-ModuleID` | `wokwi-esp32-devkit-v1` | 30 pins (`connector0..29` ↔ `3V3`, `EN`, `VP`, `VN`, `D34..VIN`) | `esp32-led-blink` |
-| **5mm Standard LED** | `5mm-LED-Red-ModuleID` | `wokwi-led` | `connector0` ↔ `C` (Cathode), `connector1` ↔ `A` (Anode) | `esp32-led-blink` |
+| **ESP32 DevKitC V4 (38-Pin)** | `ESP32_DevKitc_V4_1` | `board-esp32-devkit-c-v4` | 38 pins (`connector0..37` ↔ `3V3`, `EN`, `VP`, `VN`, `34..GND.3`) | `esp32-v4-adc-pwm` |
+| **5mm Standard LED** | `5mm-LED-Red-ModuleID` / `5mmColorLEDModuleID` | `wokwi-led` | `connector0` ↔ `C` (Cathode), `connector1` ↔ `A` (Anode) | `esp32-led-blink` |
 | **Axial Resistor** | `ResistorModuleID` | `wokwi-resistor` | `connector0` ↔ `1`, `connector1` ↔ `2` | `esp32-led-blink` |
-| **4-Pin Tactile Pushbutton** | `Tactile-Pushbutton-ModuleID` | `wokwi-pushbutton` | `connector0..3` ↔ `1.l`, `1.r`, `2.l`, `2.r` | `resistor-pushbutton-io` |
+| **4-Pin Tactile Pushbutton** | `Tactile-Pushbutton-ModuleID` / `20A9BBEE34_ST` | `wokwi-pushbutton` | `connector0..3` ↔ `1.l`, `1.r`, `2.l`, `2.r` | `resistor-pushbutton-io` |
 | **DHT22 Temp/Humidity Sensor** | `DHT22-Humidity-Temperature-ModuleID` | `wokwi-dht22` | `connector0..3` ↔ `VCC`, `SDA`, `NC`, `GND` | `wokwi-multi-sensor-iot` |
 | **HC-SR04 Ultrasonic Sensor** | `HC-SR04-Ultrasonic-ModuleID` | `wokwi-hc-sr04` | `connector0..3` ↔ `VCC`, `TRIG`, `ECHO`, `GND` | `wokwi-multi-sensor-iot` |
 | **SSD1306 I2C OLED (128x64)** | `SSD1306-OLED-I2C-ModuleID` | `board-ssd1306` | `connector0..3` ↔ `GND`, `VCC`, `SCL`, `SDA` | `wokwi-multi-sensor-iot` |
-| **Rotary Potentiometer** | `Rotary-Potentiometer-ModuleID` | `wokwi-potentiometer` | `connector0..2` ↔ `GND`, `SIG`, `VCC` | `wokwi-multi-sensor-iot` |
+| **Rotary Potentiometer** | `Rotary-Potentiometer-ModuleID` / `3234DFDC00PotentiometerModuleID` | `wokwi-potentiometer` | `connector0..2` ↔ `VCC`/`GND`, `SIG`, `GND`/`VCC` | `esp32-v4-adc-pwm` |
 | **Solderless Breadboard** | `Breadboard-RSR03MB102` | `wokwi-breadboard` | 5-hole terminal strips (`A–E`, `F–J`) & power rails (`tp`, `tn`, `bp`, `bn`) | `resistor-pushbutton-io` |
 
 ---
@@ -88,11 +89,19 @@ npm run build
 
 ---
 
-## 5. Static Hosting Deployment
+## 5. GitHub Pages & Static Hosting Deployment
 
-WireMorph is a 100% client-side static web application with zero backend dependencies. Running `npm run build` produces a static `dist/` directory that can be deployed directly to:
-- **GitHub Pages**: Upload `dist/` via `actions/deploy-pages`.
-- **Cloudflare Pages / Netlify / Vercel**: Set build command to `npm run build` and publish directory to `dist`.
+WireMorph is a 100% client-side static web application with zero backend dependencies. `vite.config.ts` is pre-configured with `base: './'` (relative asset paths) and `public/.nojekyll`, so the compiled `dist/` bundle works automatically on any GitHub Pages repository URL (`https://<username>.github.io/<repo-name>/`) or custom domain without editing paths.
+
+### Option A: Automated Deployment via GitHub Actions (Recommended)
+This project includes `.github/workflows/deploy.yml`:
+1. Push this repository to GitHub (branch `main` or `master`).
+2. In your GitHub repository, open **Settings → Pages**.
+3. Under **Build and deployment → Source**, select **GitHub Actions**.
+4. Every push to `main` / `master` (or manual trigger in the **Actions** tab) automatically runs `npm test`, builds `dist/`, and publishes to GitHub Pages.
+
+### Option B: Manual `dist/` Upload or Cloudflare Pages / Vercel / Netlify
+- Run `npm run build` locally and upload the generated `dist/` folder, or set the build command to `npm run build` and output directory to `dist`.
 
 ---
 

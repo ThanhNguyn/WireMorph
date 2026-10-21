@@ -5,6 +5,10 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
+    // Use relative base path './' by default so the static bundle works on
+    // GitHub Pages under any repository subpath (https://<user>.github.io/<repo>/)
+    // as well as root domains (Cloudflare Pages, Vercel, Netlify).
+    base: process.env.VITE_BASE_PATH || './',
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
